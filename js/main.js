@@ -1,11 +1,7 @@
-// buttons
+// Buttons
 let onlineDownload = document.getElementById("online-download");
 let fullofflineDownload = document.getElementById("full-offline-download");
 let offlineDownload = document.getElementById("offline-download");
-
-onlineDownload.style.cursor = "hand";
-offlineDownload.style.cursor = "hand";
-fullofflineDownload.style.cursor = "hand";
 
 // API base URL
 const baseURL = "https://counting-api.onrender.com";
@@ -13,10 +9,8 @@ const baseURL = "https://counting-api.onrender.com";
 // API endpoints
 let onlineIncrementURL = `${baseURL}/downloads/online/increment`;
 let offlineIncrementURL = `${baseURL}/downloads/offline/increment`;
-let fullofflineIncrementURL = `${baseURL}/downloads/fulloffline/increment`;
 let onlineCountURL = `${baseURL}/downloads/online/count`;
 let offlineCountURL = `${baseURL}/downloads/offline/count`;
-let fullofflineCountURL = `${baseURL}/downloads/fulloffline/count`;
 
 // URLs for downloads
 let offlineURL = "https://www.mediafire.com/file/orhjvbyzbpb3sap/MuslimEncyclopedia.rar/file";
@@ -33,25 +27,6 @@ let onlineCountShower = document.getElementById("onlineCountShower");
 let offlineCountShower = document.getElementById("offlineCountShower");
 let fullofflineCountShower = document.getElementById("fullofflineCountShower");
 
-// Create elements if they don't exist
-if (!onlineCountShower) {
-    onlineCountShower = document.createElement("div");
-    onlineCountShower.id = "onlineCountShower";
-    document.body.appendChild(onlineCountShower); // Add it to the body or a specific container
-}
-
-if (!offlineCountShower) {
-    offlineCountShower = document.createElement("div");
-    offlineCountShower.id = "offlineCountShower";
-    document.body.appendChild(offlineCountShower);
-}
-
-if (!fullofflineCountShower) {
-    fullofflineCountShower = document.createElement("div");
-    fullofflineCountShower.id = "fullofflineCountShower";
-    document.body.appendChild(fullofflineCountShower);
-}
-
 // Fetch initial download counts using Axios GET requests
 axios.get(onlineCountURL)
     .then((response) => {
@@ -67,17 +42,10 @@ axios.get(offlineCountURL)
     })
     .catch((error) => console.error("Error fetching offline download count:", error));
 
-axios.get(fullofflineCountURL)
-    .then((response) => {
-        fullofflineCount = response.data.count;
-        fullofflineCountShower.innerHTML = `عدد التحميلات: ${fullofflineCount}`;
-    })
-    .catch((error) => console.error("Error fetching full offline download count:", error));
-
 // Handle online download click
 onlineDownload.addEventListener("click", () => {
     axios.post(onlineIncrementURL, { type: "online" })
-        .then((response) => {
+        .then(() => {
             onlineCount++;
             onlineCountShower.innerHTML = `عدد التحميلات: ${onlineCount}`;
             window.open(onlineURL);
@@ -88,7 +56,7 @@ onlineDownload.addEventListener("click", () => {
 // Handle offline download click
 offlineDownload.addEventListener("click", () => {
     axios.post(offlineIncrementURL, { type: "offline" })
-        .then((response) => {
+        .then(() => {
             offlineCount++;
             offlineCountShower.innerHTML = `عدد التحميلات: ${offlineCount}`;
             window.open(offlineURL);
@@ -96,13 +64,9 @@ offlineDownload.addEventListener("click", () => {
         .catch((error) => console.error("Error incrementing offline download count:", error));
 });
 
-// Handle full offline download click
+// Handle full offline download click (no API call since it's unavailable)
 fullofflineDownload.addEventListener("click", () => {
-    axios.post(fullofflineIncrementURL, { type: "fulloffline" })
-        .then((response) => {
-            fullofflineCount++;
-            fullofflineCountShower.innerHTML = `عدد التحميلات: ${fullofflineCount}`;
-            window.open(fullofflineURL);
-        })
-        .catch((error) => console.error("Error incrementing full offline download count:", error));
+    fullofflineCount++;
+    fullofflineCountShower.innerHTML = `عدد التحميلات: ${fullofflineCount}`;
+    window.open(fullofflineURL);
 });
